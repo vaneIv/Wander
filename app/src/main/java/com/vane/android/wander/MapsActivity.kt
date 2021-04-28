@@ -1,7 +1,9 @@
 package com.vane.android.wander
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
@@ -10,12 +12,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
+    private val TAG = MapsActivity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +52,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setMapLongClick(map)
         setPoiClick(map)
+        setMapStyle(map)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,6 +107,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             .title(poi.name)
             )
             poiMarker.showInfoWindow()
+        }
+    }
+
+    private fun setMapStyle(map: GoogleMap) {
+        try {
+            // Customize the stiling of the base map using a JSON object defined
+            // in a raw resource file.
+            val success = map.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this,
+                            R.raw.map_style
+                    )
+            )
+            // If styling is not successful
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        }
+        // If the file can't be loaded at all
+        catch (e: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find syle. Error: ", e)
         }
     }
 }
