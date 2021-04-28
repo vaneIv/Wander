@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
@@ -84,6 +85,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setMapLongClick(map: GoogleMap) {
         map.setOnMapLongClickListener { latLng ->
+            // A Snippet is Additional text that's displayed below the title.
             val snippet = String.format(
                     Locale.getDefault(),
                     "Lat: %1$.5f, Long: %2.5f",
@@ -95,6 +97,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             .position(latLng)
                             .title(getString(R.string.dropped_pin))
                             .snippet(snippet)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
             )
         }
     }
